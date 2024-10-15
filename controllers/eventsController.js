@@ -3,11 +3,9 @@ import businessInfoModel from "../models/businessInfoModel.js"
 import transporter from "../nodemailerTransporter.js"
 import "dotenv/config";
 
-const accountSid = 'ACb87107ee48e30089e37a3e1aec2f0cb9';
-const authToken = '850bedd8bd2b78806949cf3bc168c86d';
-import twilio from 'twilio';
+
 import confirmationNumberGenerator from "../tools/confirmationNumberGenerator.js";
-const client = twilio(accountSid, authToken);
+
 
 const BASE_URL = process.env.BASE_URL
 
@@ -83,14 +81,7 @@ const eventsModelController = {
         res.status(201).json({ message: 'Usuario creado. Se ha enviado un correo de confirmación.' });
       });
 
-      // TWILIO SMS MESAGGING
-      client.messages
-      .create({
-          body: 'CONFIRMADA!',
-          from: '+16196484815',
-          to: '+573173253124'
-      })
-      .then(message => console.log(message.sid));
+      
 
     } catch (error) {
       if (error.name === 'ValidationError') {
