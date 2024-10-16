@@ -18,7 +18,13 @@ app.get("/", (req, res) => {
 })
 
 // Middlewares
-app.use(cors())
+const corsOptions = {
+  origin: 'https://colombiareservatodo.web.app', // Cambia esto por la URL de tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+  credentials: true // Permitir cookies, si es necesario
+};
+
+app.use(cors(corsOptions));
 app.use(express.json())
 
 //routes
