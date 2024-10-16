@@ -2,10 +2,10 @@ import nodemailer from "nodemailer"
 import "dotenv/config";
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // Puedes cambiar esto según tu proveedor de correo
-  host: "smtp-relay.gmail.com",
-  port: 587,
-  secure: false,
+  // service: 'gmail', // Puedes cambiar esto según tu proveedor de correo
+  host: "smtp.resend.com",
+  secure: true,
+  port: 465,
   auth: {
     user: process.env.NODEMAILER_USER, 
     pass: process.env.NODEMAILER_PASS, // Contraseña o App Password si usas Gmail con 2FA
