@@ -74,6 +74,10 @@ const eventsModelController = {
             `,
       };
 
+      console.log('Using user:', process.env.NODEMAILER_USER);
+      console.log('Using user:', process.env.NODEMAILER_PASS);
+
+
       // Use Promise.all to handle both email sending
       await Promise.all([
         transporter.sendMail(emailForClient),
