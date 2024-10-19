@@ -107,7 +107,6 @@ const businessInfoController = {
         }
         const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
         const downloadURL = await getDownloadURL(snapshot.ref)
-        console.log("File sucessfully uploaded.")
         
         // Continue with the business update after the file is uploaded
         let newInfo = {
@@ -119,7 +118,7 @@ const businessInfoController = {
         newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
         const newBusinessInfo = await businessInfoModel.findByIdAndUpdate(req.params.id, newInfo)
         
-        return res.send({
+        return res.json({
           message: "Logo and SessionTime were created correctly",
           downloadURL: downloadURL
         })
@@ -130,7 +129,7 @@ const businessInfoController = {
         let newInfo = req.body
         newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
         await businessInfoModel.findByIdAndUpdate(req.params.id, newInfo)
-        return res.send({
+        return res.json({
           message: "Business general info was updated correctly",
           newInfo
         })
@@ -161,7 +160,7 @@ const businessInfoController = {
         newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
         const newBusinessInfo = await businessInfoModel.findByIdAndUpdate(req.params.id, newInfo)
         
-        return res.send({
+        return res.json({
           message: "Logo was updated correctly",
           downloadURL: downloadURL
         })

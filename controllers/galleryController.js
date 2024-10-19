@@ -67,13 +67,13 @@ const galleryController =  {
       await newGallery.save()
       
       // Send the response with the list of uploaded files
-      return res.send({
+      return res.json({
         firebaseMessage: "Files uploaded to Firebase storage",
         message: "Gallery successfully created.",
         newGallery
       });
     } catch (error) {
-      return res.status(400).send(error.message);
+      return res.status(400).json(error.message);
     }
   }, 
 

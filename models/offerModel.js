@@ -7,7 +7,7 @@ const offerModel = new Schema({
   description: String, 
   price: Number, 
 },
-{versionKey:false , timestamps: true}
+{versionKey:false , timestamps: false}
 );
 
 
