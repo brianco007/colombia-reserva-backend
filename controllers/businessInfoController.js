@@ -73,6 +73,7 @@ const businessInfoController = {
   getAllBusinesses: async (req, res) => {
     try {
       const allBusinesses = await businessInfoModel.find();
+      res.setHeader('Content-Type', 'application/json');
       res.status(200).json(allBusinesses);
     } catch (error) {
       res.json({
@@ -86,6 +87,7 @@ const businessInfoController = {
   getOneBusiness: async (req, res) => {
     try {
       const business = await businessInfoModel.findById(req.params.id);
+      res.setHeader('Content-Type', 'application/json');
       res.json(business);
     } catch (error) {
       res.json({ message: "Error. Make sure the business ID is correct" });
