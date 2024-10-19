@@ -24,8 +24,9 @@ const corsOptions = {
   credentials: true // Permitir cookies, si es necesario
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json())
+
 
 //routes
 app.use("/businessInfo", businessInfoRouter)
