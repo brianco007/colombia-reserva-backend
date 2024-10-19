@@ -14,7 +14,7 @@ const eventsModelController = {
       newEvent.confirmationNumber = confirmationNumberGenerator();
       const createdEvent = await newEvent.save();
 
-      const { businessName, email } = await businessInfoModel.findById(
+      const { businessName, email, _id } = await businessInfoModel.findById(
         newEvent.businessId
       );
 
@@ -66,16 +66,11 @@ const eventsModelController = {
                   <p><span style="font-weight: 500;">Hora:</span>  ${
                     newEvent.start.split("T")[1]
                   }</p>
-                  <a href="${BASE_URL}/fullcalendar/${
-          newEvent.businessId
-        }" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;">Ver todas las reservas</a>
+                  <a href="${BASE_URL}/dashboard/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;">Ver todas las reservas</a>
                 </div>
               </div>
             `,
       };
-
-      console.log('Using user:', process.env.NODEMAILER_USER);
-      console.log('Using user:', process.env.NODEMAILER_PASS);
 
 
       // Use Promise.all to handle both email sending

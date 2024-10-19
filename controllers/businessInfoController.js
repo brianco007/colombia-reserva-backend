@@ -1,11 +1,20 @@
 import businessInfoModel from "../models/businessInfoModel.js"
 import generateTimeSlots from "../tools/generateTimeSlots.js";
-import multer from "multer"
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
+import firebaseConfig from "../firebaseConfig.js";
 
 import transporter from "../nodemailerTransporter.js"
 import "dotenv/config";
 
 const BASE_URL = process.env.BASE_URL
+
+
+//ininitialize a firebase app
+initializeApp(firebaseConfig)
+// initialize Firebase Cloud Storage
+const storage = getStorage()
+
 
 const businessInfoController = {
 
@@ -15,14 +24,13 @@ const businessInfoController = {
       const newBusiness = new businessInfoModel(req.body)
 
       const createdBusiness = await newBusiness.save();
-      res.status(201).json({ message: 'Business created successfully', createdBusiness });
 
       const { _id, email, businessName } = createdBusiness
 
       const emailForBusiness = {
         from: 'briancormin@gmail.com', // Correo del remitente
         to: email, // Correo del destinatario
-        subject: 'Enlace para tus clientes.',
+        subject: 'Página de reservas creada.',
         html: `
           <div style="margin: 0; padding: 0; box-sizing: border-box;">
             <h1 style="text-align: center">¡Hola, ${businessName}!</h1>
@@ -45,9 +53,12 @@ const businessInfoController = {
         if (error) {
           console.error('Error al enviar el correo:', error);
           return res.status(500).json({ message: 'Error al enviar el correo de confirmación.' });
+        } else {
+
+          console.log('Correo enviado:', info.response);
+          res.status(201).json({ message: 'Business created successfully', createdBusiness });
         }
-        console.log('Correo enviado:', info.response);
-        res.status(201).json({ message: 'Usuario creado. Se ha enviado un correo de confirmación.' });
+
       });
       
     } catch (err) {
@@ -83,75 +94,84 @@ const businessInfoController = {
 
 
   updateBusiness: async (req, res) => {
-    try {
 
-      // If user wants to update only general info
-      if(typeof(req.body.banner) === "string"){
+    const currentInfo = await businessInfoModel.findById(req.params.id)
+
+    try {
+      // CASE: 1 In case it is the first time creating a logo
+      if(!currentInfo.banner){
+        const storageRef = ref(storage, `businessLogos/${req.file.originalname}`)
+        // Create file metadata
+        const metadata = {
+          contentType: req.file.mimetype
+        }
+        const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
+        const downloadURL = await getDownloadURL(snapshot.ref)
+        console.log("File sucessfully uploaded.")
+        
+        // Continue with the business update after the file is uploaded
+        let newInfo = {
+          ...req.body,
+          schedule: JSON.parse(req.body.schedule),
+          sessionTime: JSON.parse(req.body.sessionTime),
+          banner: downloadURL,
+        };
+        newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
+        const newBusinessInfo = await businessInfoModel.findByIdAndUpdate(req.params.id, newInfo)
+        
+        return res.send({
+          message: "Logo and SessionTime were created correctly",
+          downloadURL: downloadURL
+        })
+      } 
+
+      // CASE 2: In case user wants to update ONLY general info
+      else if(currentInfo.banner && !req.file){
         let newInfo = req.body
         newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
-        newInfo = await businessInfoModel.findByIdAndUpdate(req.params.id, req.body)
-        res.json({ message: "Review info has been updated."});
+        await businessInfoModel.findByIdAndUpdate(req.params.id, newInfo)
+        return res.send({
+          message: "Business general info was updated correctly",
+          newInfo
+        })
+      }
 
-      } else {    // if user wants to update picture
+      // CASE: 3  user wants to update ONLY the logo
+      else {
 
-        // Multer storage configuration
-        const myStorage = multer.diskStorage({
-          destination: "businessBanners",
-          filename: (req, file, cb) => {
-            cb(null, file.originalname); 
-          },
-        });
-    
-        const upload = multer({ storage: myStorage }).single('banner');
-    
-        // Handle the file upload
-        upload(req, res, async (error) => {
-          if (error) {
-            return res.json({
-              mensaje: 'Ocurrió un error al subir la imagen.',
-              datos: null,
-            });
-          }
-    
-          // Check if the file was uploaded
-          if (!req.file) {
-            return res.status(400).json({
-              message: 'No image uploaded',
-            });
-          }
-          
-          
-          // Continue with the business update after the file is uploaded
-          let newInfo = {
-            ...req.body,
-            schedule: JSON.parse(req.body.schedule),
-            sessionTime: JSON.parse(req.body.sessionTime),
-            banner: req.file.filename,
-          };
-          newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
-  
-          try {
-            const updatedInfo = await businessInfoModel.findByIdAndUpdate(
-              req.params.id,
-              newInfo,
-              { new: true } // This returns the updated document
-            );
-            if (!updatedInfo) {
-              return res.status(404).json({ message: "Business not found" });
-            }
-            res.json({ message: "Business info has been updated.", data: updatedInfo });
-          } catch (error) {
-            res.status(500).json({
-              message: "Error updating business information",
-            });
-          }
-        });
+        // deleting old logo from firebase
+        const url = currentInfo.banner
+        const picToBeDeletedFromFirebase = ref(storage, url)
+        deleteObject(picToBeDeletedFromFirebase)
+
+        // creating a new logo in Firebase
+        const storageRef = ref(storage, `businessLogos/${req.file.originalname}`)
+        const metadata = {
+          contentType: req.file.mimetype
+        }
+        const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
+        const downloadURL = await getDownloadURL(snapshot.ref)
+
+        let newInfo = {
+          ...req.body,
+          schedule: JSON.parse(req.body.schedule),
+          sessionTime: JSON.parse(req.body.sessionTime),
+          banner: downloadURL,
+        };
+        newInfo.timeSlots = generateTimeSlots(newInfo.schedule, newInfo.sessionTime)
+        const newBusinessInfo = await businessInfoModel.findByIdAndUpdate(req.params.id, newInfo)
+        
+        return res.send({
+          message: "Logo was updated correctly",
+          downloadURL: downloadURL
+        })
       }
       
     } catch (error) {
       res.status(500).json({
         message:
           "Error. Make sure the business ID is correct and you include all the required fields.",
+          error: error.message
       });
     }
   },

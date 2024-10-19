@@ -7,7 +7,7 @@ import businessInfoRouter from "../routers/businessInfoRouter.js";
 import eventsRouter from "../routers/eventsRouter.js";
 import reviewsRouter from "../routers/reviewsRouter.js";
 import galleryRouter from "../routers/galleryRouter.js";
-
+import offerRouter from "../routers/offerRouter.js"
 
 connectDB()
 const app = express();
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 // Middlewares
 const corsOptions = {
-  origin: 'https://colombiareservatodo.web.app', // Cambia esto por la URL de tu frontend
+  origin: 'https://colombiareservatodo.web.app', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
   credentials: true // Permitir cookies, si es necesario
 };
@@ -32,6 +32,7 @@ app.use("/businessInfo", businessInfoRouter)
 app.use("/events", eventsRouter)
 app.use("/reviews", reviewsRouter)
 app.use("/gallery", galleryRouter)
+app.use("/offer", offerRouter)
 app.use('/businessBanners', express.static(path.resolve(`businessBanners`)));//ruta para que las imagnes queden publicas//
 
 

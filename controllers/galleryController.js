@@ -8,21 +8,12 @@ import firebaseConfig from "../firebaseConfig.js";
 initializeApp(firebaseConfig)
 // initialize Cloud Storage
 const storage = getStorage()
-const fileUrl = "https://firebasestorage.googleapis.com/v0/b/businessbanners007.appspot.com/o/businessGallery%2F1085313559-1?alt=media&token=088b42e9-2a6a-4174-93d2-4d345fd70cfa"
 
-    // const fileRef = storage.refFromURL(fileUrl);
-    // console.log("File in database before delete exists : "
-    //   + fileRef.exists()) 
-
-    // const storageRef2 = ref(storage, fileUrl);
-    // console.log(storageRef2)
 
 const galleryController =  {
   uploadNewGallery: async (req, res) => {
 
     const { businessId } = req.body
-
-    
 
     try {
       const uploadedFiles = [];
