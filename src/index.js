@@ -8,6 +8,8 @@ import eventsRouter from "../routers/eventsRouter.js";
 import reviewsRouter from "../routers/reviewsRouter.js";
 import galleryRouter from "../routers/galleryRouter.js";
 import offerRouter from "../routers/offerRouter.js"
+import signupRouter from "../routers/signupRouter.js";
+import loginRouter from "../routers/loginRouter.js"
 
 connectDB()
 const app = express();
@@ -34,6 +36,10 @@ app.use("/events", eventsRouter)
 app.use("/reviews", reviewsRouter)
 app.use("/gallery", galleryRouter)
 app.use("/offer", offerRouter)
+app.use("/signup", signupRouter)
+app.use("/login", loginRouter)
+
+
 app.use('/businessBanners', express.static(path.resolve(`businessBanners`)));//ruta para que las imagnes queden publicas//
 
 
