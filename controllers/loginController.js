@@ -26,7 +26,7 @@ const loginController = {
       }
      
     } catch (err) {
-      res.json({message: 'An error ocurred', error: err})
+      res.json({message: 'An error ocurred', error: err.message})
     }
   }
 }
