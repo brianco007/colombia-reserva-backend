@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt'; 
-import signupModel from '../models/signupModel.js'
+import loginModel from "../models/loginModel.js"
 import { tokenGenerator } from '../tools/tokenGenerator.js';
 
 
 const loginController = {
   userLogin: async(req, res)=>{
     try {
-      const { email,  password, businessId } = req.body;
-      const userFound = await signupModel.findOne({email})//finds the user in Mongo DB
+      const { email,  password } = req.body;
+      const userFound = await loginModel.findOne({email})//finds the user in Mongo DB
       // console.log( "CONSOLA: ",  userFound)
       if(email){ // if there is an email in the DB
         const isTheSame = await bcrypt.compare(password, userFound.password);

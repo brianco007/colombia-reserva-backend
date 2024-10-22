@@ -35,15 +35,15 @@ const businessInfoController = {
           <div style="margin: 0; padding: 0; box-sizing: border-box;">
             <h1 style="text-align: center">¡Hola, ${businessName}!</h1>
             <div style="margin-top: 50px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
-              <h4>🥳 Ahora tus clientes están a solo unos clicks de agendar citas. 🥳</h4>
+              <h4>🥳 Ahora tus clientes ya pueden agendar citas. 🥳</h4>
 
               <p><span style:"font-weight: 500;"> 👇 Este es el enlace para tus clientes. </p>
               
               <a href="${BASE_URL}/booking/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;"> RESERVAR </a>
 
-              <p><span style:"font-weight: 500;"> 👇 Este es el enlace para ti. </p>
+              <p><span style:"font-weight: 500;"> 👇 Crea tu cuenta de administrador aquí. </p>
               
-              <a href="${BASE_URL}/dashboard/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;"> VER MIS RESERVAS </a>
+              <a href="${BASE_URL}/signup/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;"> CREAR ADMINISTRADOR </a>
             </div>
           </div>
         `,

@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-const signupModel = new Schema(
+const loginModel = new Schema(
   {
     email: { 
       type: String, 
@@ -21,14 +21,9 @@ const signupModel = new Schema(
       type: String, 
       required: [true, "Password is required"],
       trim: true,
-    },
-
-    businessId: {
-      type: String, 
-      required: [true, "Business ID is required"],
     }
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: false }
 );
 
-export default model("BusinessSignup", signupModel);
+export default model("BusinessLogin", loginModel);
