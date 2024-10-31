@@ -32,20 +32,24 @@ const businessInfoController = {
         to: email, // Correo del destinatario
         subject: 'Página de reservas creada.',
         html: `
-          <div style="margin: 0; padding: 0; box-sizing: border-box;">
-            <h1 style="text-align: center">¡Hola, ${businessName}!</h1>
-            <div style="margin-top: 50px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
-              <h4>🥳 Ahora tus clientes ya pueden agendar citas. 🥳</h4>
-
-              <p><span style:"font-weight: 500;"> 👇 Este es el enlace para tus clientes. </p>
-              
-              <a href="${BASE_URL}/booking/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;"> RESERVAR </a>
-
-              <p><span style:"font-weight: 500;"> 👇 Crea tu cuenta de administrador aquí. </p>
-              
-              <a href="${BASE_URL}/signup/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;"> CREAR ADMINISTRADOR </a>
-            </div>
-          </div>
+          <div style="margin: 0; padding: 0; box-sizing: border-box; display: flex; justify-content: center; align-items: center; flex-direction: column; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #0f172a; background-color: #f3f4f6; margin: 0 auto; height: 100vh; padding: 0 20px; ">
+    <div style="background-color: #fff; max-width: 800px; border-radius: 10px; margin-top: 50px; padding: 50px 40px; box-shadow: 0px 0px 20px  rgba(0, 0, 0, .2);">
+      <h1 style="text-align: center; font-style: italic;">Colombia<span style="color: #0e7490;">Reserva</span></h1>
+      <h4 style="text-align: center">¡Felicidades ${businessName}!</h4>
+      <div style="margin-top: 40px; font-size: 18px; display: flex; flex-direction: column; justify-content: center;">
+        <h4 style="font-size: 70px; text-align: center;">🎉</h4>
+        <h4 style="text-align: center;">Ahora tus clientes ya pueden agendar citas.</h4>
+  
+        <p style="font-weight: 500; margin-top: 20px;">  👇 Este es el enlace para tus clientes. </p>
+        
+        <a href="${BASE_URL}/booking/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: #0f172a; color: #fff; border-radius: 10px; font-size: 15px; align-self: start;"> RESERVAR </a>
+  
+        <p style="font-weight: 500; margin-top: 20px;">  👇 Crea tu cuenta de administrador aquí. </p>
+        
+        <a href="${BASE_URL}/signup/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: #0f172a; color: #fff; border-radius: 10px; font-size: 15px; align-self: start;"> CREAR ADMINISTRADOR </a>
+      </div>
+    </div>
+  </div>
         `,
       };
 

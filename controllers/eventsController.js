@@ -16,7 +16,7 @@ const eventsModelController = {
       const createdEvent = await newEvent.save();
 
 
-      const { businessName, email, _id } = await businessInfoModel.findById(
+      const { businessName, email, _id, banner } = await businessInfoModel.findById(
         newEvent.businessId
       );
 
@@ -26,27 +26,29 @@ const eventsModelController = {
         to: newEvent.email, // Correo del destinatario
         subject: "Confirmación de Reserva",
         html: `
-              <div style="margin: 0; padding: 0; box-sizing: border-box;">
-                <h1 style="text-align: center">¡Hola, ${newEvent.title
-                  .split(" ")[0]
-                  .trim()}!</h1>
-                <div style="margin-top: 50px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
-                  <h2>Gracias por confiar en ${businessName}.</h2>
-                  <p>Aquí abajo te dejamos la información de tu reserva</p>
-                  <p><span style="font-weight: 500;">Fecha:</span>  ${
-                    newEvent.start.split("T")[0]
-                  }</p>
-                  <p><span style="font-weight: 500;">Hora:</span>  ${newEvent.start
-                    .split("T")[1]
-                    .slice(0, 5)}</p>
-                  <p><span style="font-weight: 500;">N° de confirmación:</span>  ${
-                    newEvent.confirmationNumber
-                  }</p>
-                  <a href="${BASE_URL}/cancel/${
-          newEvent._id
-        }" style="text-decoration: none; padding: 5px 10px; background-color: rgb(203, 213, 225); color: #000; border-radius: 10px;">Cancelar Reserva</a>
-                </div>
-              </div>
+              <div style="margin: 0; padding: 0; box-sizing: border-box; display: flex; justify-content: center; align-items: center; flex-direction: column; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #0f172a; background-color: #f3f4f6; margin: 0 auto; height: 100vh; padding: 0 20px; ">
+    <div style="background-color: #fff; max-width: 800px; border-radius: 10px; margin-top: 50px; padding: 50px 40px; box-shadow: 0px 0px 20px  rgba(0, 0, 0, .2);">
+      <div style="display: flex; justify-content: center;">
+        <img src="${banner}" alt="Business logo" style="width: 100px;">
+      </div>
+      <h2 style="text-align: center; margin-top: 20px; font-size: 20px;">${businessName}</h2>
+      <h4 style="text-align: center; margin: 30px 0; color: #0e7490;">¡Hola, ${newEvent.title.split(" ")[0].trim()}!</h4>
+      <div style="margin-top: 30px; font-size: 18px; display: flex; flex-direction: column;">
+        <p style="text-align: center;">Aquí abajo te dejamos la información de tu reserva</p>
+        <p><span style="font-weight: 500; color: #0e7490;">Fecha:</span>  ${
+          newEvent.start.split("T")[0]
+        }</p>
+        <p><span style="font-weight: 500; color: #0e7490;">Hora:</span>  ${newEvent.start
+          .split("T")[1]
+          .slice(0, 5)}</p>
+        <p><span style="font-weight: 500; color: #0e7490;">N° de confirmación:</span>  ${
+          newEvent.confirmationNumber
+        }</p>
+        <a href="${BASE_URL}/cancel/${
+  newEvent._id
+  }" style="text-decoration: none; padding: 5px 10px; background-color: #0f172a; color: #fff; border-radius: 10px; align-self: start;">Cancelar Reserva</a>
+      </div>
+    </div>
             `,
       };
 
@@ -55,22 +57,29 @@ const eventsModelController = {
         to: email, // Correo del destinatario
         subject: "Tienes una nueva reserva",
         html: `
-              <div style="margin: 0; padding: 0; box-sizing: border-box;">
-                <h1 style="text-align: center">¡Hola, ${businessName}!</h1>
-                <div style="margin-top: 50px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
-                  <h4>Aquí abajo te dejamos la información de tu reserva</h4>
-                  <p><span style="font-weight: 500;">Datos del cliente:</span>  ${
-                    newEvent.title
-                  }</p>
-                  <p><span style="font-weight: 500;">Fecha:</span>  ${
-                    newEvent.start.split("T")[0]
-                  }</p>
-                  <p><span style="font-weight: 500;">Hora:</span>  ${
-                    newEvent.start.split("T")[1]
-                  }</p>
-                  <a href="${BASE_URL}/dashboard/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;">Ver todas las reservas</a>
-                </div>
-              </div>
+              <div style="margin: 0; padding: 0; box-sizing: border-box; display: flex; justify-content: center; align-items: center; flex-direction: column; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #0f172a; background-color: #f3f4f6; margin: 0 auto; height: 100vh; padding: 0 20px; ">
+      <div style="background-color: #fff; max-width: 800px; border-radius: 10px; margin-top: 50px; padding: 50px 40px; box-shadow: 0px 0px 20px  rgba(0, 0, 0, .2);">
+        <h5 style="text-align: center; font-style: italic;">Colombia<span style="color: #0e7490;">Reserva</span></h5>
+        <h3 style="text-align: center">${businessName}</h3>
+        <div style="margin-top: 30px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
+          <h4 style="font-size: 20px; text-align: center;">Aquí abajo te dejamos la información de tu reserva</h4>
+
+          <div style="margin-top: 30px;">
+
+            <p><span style="color: #0e7490;">Datos del cliente:</span>  ${
+              newEvent.title
+            }</p>
+            <p><span style="color: #0e7490;">Fecha:</span>  ${
+              newEvent.start.split("T")[0]
+            }</p>
+            <p><span style="color: #0e7490;">Hora:</span>  ${
+              newEvent.start.split("T")[1]
+            }</p>
+          </div>
+          <a href="${BASE_URL}/dashboard/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;">Ir al dashboard</a>
+        </div>
+      </div>
+    </div>
             `,
       };
 
