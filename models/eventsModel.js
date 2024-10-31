@@ -8,7 +8,7 @@ const eventsModel = new Schema({
   start: {type: String, required: [true, "The event start is required."]}, 
   end: {type: String, required: [true, "The event end is required."]},
   confirmationNumber: {type: Number, required: [true, "The confirmation number is required."]},
-
+  service: String
 },
 {versionKey:false , timestamps: false}
 );
