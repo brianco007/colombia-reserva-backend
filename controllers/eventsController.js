@@ -6,6 +6,7 @@ import "dotenv/config";
 import confirmationNumberGenerator from "../tools/confirmationNumberGenerator.js";
 
 const BASE_URL = process.env.BASE_URL;
+const NODEMAILER_USER = process.env.NODEMAILER_USER
 
 const eventsModelController = {
   createEvent: async (req, res) => {
@@ -14,13 +15,14 @@ const eventsModelController = {
       newEvent.confirmationNumber = confirmationNumberGenerator();
       const createdEvent = await newEvent.save();
 
+
       const { businessName, email, _id } = await businessInfoModel.findById(
         newEvent.businessId
       );
 
       // Configurar los detalles del correo electrónico
       const emailForClient = {
-        from: "briancormin@gmail.com", // Correo del remitente
+        from: NODEMAILER_USER, // Correo del remitente
         to: newEvent.email, // Correo del destinatario
         subject: "Confirmación de Reserva",
         html: `
@@ -49,7 +51,7 @@ const eventsModelController = {
       };
 
       const emailForBusiness = {
-        from: "briancormin@gmail.com", // Correo del remitente
+        from: NODEMAILER_USER, // Correo del remitente
         to: email, // Correo del destinatario
         subject: "Tienes una nueva reserva",
         html: `

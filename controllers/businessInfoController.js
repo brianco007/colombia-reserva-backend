@@ -8,7 +8,7 @@ import transporter from "../nodemailerTransporter.js"
 import "dotenv/config";
 
 const BASE_URL = process.env.BASE_URL
-
+const NODEMAILER_USER = process.env.NODEMAILER_USER
 
 //ininitialize a firebase app
 initializeApp(firebaseConfig)
@@ -28,7 +28,7 @@ const businessInfoController = {
       const { _id, email, businessName } = createdBusiness
 
       const emailForBusiness = {
-        from: 'briancormin@gmail.com', // Correo del remitente
+        from: NODEMAILER_USER, // Correo del remitente
         to: email, // Correo del destinatario
         subject: 'Página de reservas creada.',
         html: `
