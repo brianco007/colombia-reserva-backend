@@ -31,9 +31,9 @@ const eventsModelController = {
       <div style="display: flex; justify-content: center;">
         <img src="${banner}" alt="Business logo" style="width: 100px;">
       </div>
-      <h2 style="text-align: center; margin-top: 20px; font-size: 20px;">${businessName}</h2>
-      <h4 style="text-align: center; margin: 30px 0; color: #0e7490;">¡Hola, ${newEvent.title.split(" ")[0].trim()}!</h4>
-      <div style="margin-top: 30px; font-size: 18px; display: flex; flex-direction: column;">
+      <h2 style="text-align: center; margin-top: 20px; font-size: 15px;">${businessName}</h2>
+      <h4 style="text-align: center; margin: 30px 0; color: #0e7490; font-size: 20px;">¡Hola, ${newEvent.title.split(" ")[0].trim()}!</h4>
+      <div style="margin-top: 30px; font-size: 18px;">
         <p style="text-align: center;">Aquí abajo te dejamos la información de tu reserva</p>
         <p><span style="font-weight: 500; color: #0e7490;">Fecha:</span>  ${
           newEvent.start.split("T")[0]
