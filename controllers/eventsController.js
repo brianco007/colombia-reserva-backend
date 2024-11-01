@@ -59,7 +59,7 @@ const eventsModelController = {
         html: `
               <div style="margin: 0; padding: 0; box-sizing: border-box; display: flex; justify-content: center; align-items: center; flex-direction: column; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #0f172a; background-color: #f3f4f6; margin: 0 auto; height: 100vh; padding: 0 20px; ">
       <div style="background-color: #fff; max-width: 800px; border-radius: 10px; margin-top: 50px; padding: 50px 40px; box-shadow: 0px 0px 20px  rgba(0, 0, 0, .2);">
-        <h5 style="text-align: center; font-style: italic;">Colombia<span style="color: #0e7490;">Reserva</span></h5>
+        <h5 style="text-align: center; font-style: italic; font-size: 20px">Colombia<span style="color: #0e7490;">Reserva</span></h5>
         <h3 style="text-align: center">${businessName}</h3>
         <div style="margin-top: 30px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
           <h4 style="font-size: 20px; text-align: center;">Aquí abajo te dejamos la información de tu reserva</h4>
