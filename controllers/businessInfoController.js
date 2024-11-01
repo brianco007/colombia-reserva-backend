@@ -34,9 +34,8 @@ const businessInfoController = {
         html: `
           <div style="margin: 0; padding: 0; box-sizing: border-box; display: flex; justify-content: center; align-items: center; flex-direction: column; font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; color: #0f172a; background-color: #f3f4f6; margin: 0 auto; height: 100vh; padding: 0 20px; ">
     <div style="background-color: #fff; max-width: 800px; border-radius: 10px; margin-top: 50px; padding: 50px 40px; box-shadow: 0px 0px 20px  rgba(0, 0, 0, .2);">
-      <h1 style="text-align: center; font-style: italic;">Colombia<span style="color: #0e7490;">Reserva</span></h1>
-      <h4 style="text-align: center">¡Felicidades ${businessName}!</h4>
-      <div style="margin-top: 40px; font-size: 18px; display: flex; flex-direction: column; justify-content: center;">
+      <h4 style="text-align: center; font-size: 20px;">¡Felicidades ${businessName}!</h4>
+      <div style="margin-top: 40px; font-size: 18px;">
         <h4 style="font-size: 70px; text-align: center;">🎉</h4>
         <h4 style="text-align: center;">Ahora tus clientes ya pueden agendar citas.</h4>
   
@@ -48,6 +47,7 @@ const businessInfoController = {
         
         <a href="${BASE_URL}/signup/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: #0f172a; color: #fff; border-radius: 10px; font-size: 15px; align-self: start;"> CREAR ADMINISTRADOR </a>
       </div>
+      <h1 style="text-align: center; font-style: italic; font-size: 25px; margin-top: 50px" >Colombia<span style="color: #0e7490;">Reserva</span></h1>
     </div>
   </div>
         `,
