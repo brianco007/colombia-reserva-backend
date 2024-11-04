@@ -26,7 +26,9 @@ const businessInfoModel = new Schema({
   facebook: String,
   tiktok: String,
   youtube: String,
-  linkedIn: String
+  linkedIn: String,
+  needsReceipts: Boolean,
+  bankAccounts: [{bank: String, number: String}]
 },
 {versionKey:false , timestamps: false}
 );

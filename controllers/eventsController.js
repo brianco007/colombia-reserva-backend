@@ -2,23 +2,47 @@ import eventsModel from "../models/eventsModel.js";
 import businessInfoModel from "../models/businessInfoModel.js";
 import transporter from "../nodemailerTransporter.js";
 import "dotenv/config";
-
 import confirmationNumberGenerator from "../tools/confirmationNumberGenerator.js";
+//firebase imports
+import firebaseConfig from "../firebaseConfig.js";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
+
 
 const BASE_URL = process.env.BASE_URL;
 const NODEMAILER_USER = process.env.NODEMAILER_USER
+//ininitialize a firebase app
+initializeApp(firebaseConfig)
+const storage = getStorage()
 
 const eventsModelController = {
   createEvent: async (req, res) => {
     try {
       const newEvent = new eventsModel(req.body);
       newEvent.confirmationNumber = confirmationNumberGenerator();
+      
+      // Upload recipt to Firebase
+      const { businessId } = req.body
+      if(req.file){
+        const storageRef = ref(storage, `receipts/${businessId}-${req.file.originalname}`);
+        const metadata = {
+          contentType: req.file.mimetype
+        };
+        const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        newEvent.receipt = downloadURL
+      }
+
+      // Save in event in MongoDb
       const createdEvent = await newEvent.save();
 
-
+      // Variables for sending emails
       const { businessName, email, _id, banner } = await businessInfoModel.findById(
         newEvent.businessId
       );
+
+      const myReceipt = createdEvent.receipt ? `<a href="${createdEvent.receipt}" style="text-decoration: none; padding: 5px 10px; background-color: #0e7490; color: #fff; border-radius: 10px;">Ver recibo de consignación</a>` : ""
+    
 
       // Configurar los detalles del correo electrónico
       const emailForClient = {
@@ -62,7 +86,7 @@ const eventsModelController = {
         <h5 style="text-align: center; font-style: italic; font-size: 20px">Colombia<span style="color: #0e7490;">Reserva</span></h5>
         <h3 style="text-align: center">${businessName}</h3>
         <div style="margin-top: 30px; font-size: 18px"; display: flex; flex-direction: column; align-items: center; justify-content: center;>
-          <h4 style="font-size: 20px; text-align: center;">Aquí abajo te dejamos la información de tu reserva</h4>
+          <h4 style="font-size: 20px; text-align: center;">Aquí abajo te dejamos la información de tu cliente</h4>
 
           <div style="margin-top: 30px;">
 
@@ -77,10 +101,13 @@ const eventsModelController = {
             }</p>
           </div>
           <a href="${BASE_URL}/dashboard/${_id}" style="text-decoration: none; padding: 5px 10px; background-color: rgb(17, 24, 39); color: #fff; border-radius: 10px;">Ir al dashboard</a>
+
+          ${myReceipt ? myReceipt : ""}
         </div>
       </div>
     </div>
-            `,
+            `
+        
       };
 
 
@@ -147,12 +174,21 @@ const eventsModelController = {
 
   deleteEvent: async (req, res) => {
     try {
+      //delete receipts from Firebase
+      const eventInfo = await eventsModel.findById(req.params.id)
+      if(eventInfo.receipt){
+        const picToBeDeletedFromFirebase = ref(storage, eventInfo.receipt)
+        console.log("EVENT INFO", picToBeDeletedFromFirebase)
+        deleteObject(picToBeDeletedFromFirebase)
+      }
+
+      // delete event from MongoDb
       const eventToBeDeleted = await eventsModel.findByIdAndDelete(
         req.params.id
       );
       res.json({ message: "Event has been removed." });
     } catch (error) {
-      res.json({ message: "Error. Make sure the event ID is correct" });
+      res.json({ message: "Error. Make sure the event ID is correct", error: error.message });
     }
   },
 };
