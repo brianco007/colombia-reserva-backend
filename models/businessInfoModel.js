@@ -28,6 +28,7 @@ const businessInfoModel = new Schema({
   youtube: String,
   linkedIn: String,
   needsReceipts: Boolean,
+  receiptInfo: String,
   bankAccounts: [{bank: String, number: String}]
 },
 {versionKey:false , timestamps: false}
