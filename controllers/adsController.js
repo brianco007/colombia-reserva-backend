@@ -26,6 +26,7 @@ const adsController = {
 
       let newAd = new adsModel(req.body);  
       newAd.adPicture = downloadURL   
+      newAd.businessId = JSON.parse(businessId)
       const createdAd = await newAd.save();
       res.status(201).json({ message: "Ad created successfully", createdAd });
     } catch (error) {
