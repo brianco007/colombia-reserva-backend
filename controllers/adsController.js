@@ -117,7 +117,7 @@ const adsController = {
       const adToBeDeleted = await adsModel.findByIdAndDelete(req.params.id);
       res.json({ message: "Ad has been removed." });
     } catch (error) {
-      res.json({ message: "Error. Make sure the ad ID is correct" });
+      res.json({ message: "Error. Make sure the ad ID is correct", error: error.message });
     }
   },
 };
