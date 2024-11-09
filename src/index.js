@@ -10,6 +10,7 @@ import galleryRouter from "../routers/galleryRouter.js";
 import offerRouter from "../routers/offerRouter.js"
 import signupRouter from "../routers/signupRouter.js";
 import loginRouter from "../routers/loginRouter.js"
+import adsRouter from "../routers/adsRouter.js";
 
 connectDB()
 const app = express();
@@ -38,6 +39,8 @@ app.use("/gallery", galleryRouter)
 app.use("/offer", offerRouter)
 app.use("/signup", signupRouter)
 app.use("/login", loginRouter)
+app.use("/ads", adsRouter)
+
 
 
 app.use('/businessBanners', express.static(path.resolve(`businessBanners`)));//ruta para que las imagnes queden publicas//
