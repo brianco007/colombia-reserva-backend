@@ -15,7 +15,7 @@ const adsController = {
       const { businessId } = req.body
 
       // Firebase upload
-      const storageRef = ref(storage, `businessAds/${businessId}-${req.file.originalname}`)
+      const storageRef = ref(storage, `businessAds/${JSON.parse(businessId)}-${req.file.originalname}`)
       const metadata = {
         contentType: req.file.mimetype
       }
