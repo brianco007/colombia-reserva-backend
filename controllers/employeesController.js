@@ -26,27 +26,27 @@ const employeesController = {
       const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
       const downloadURL = await getDownloadURL(snapshot.ref)
 
-      // Construct the schedule array from the flattened keys
-      const schedule = [];
-      // Loop through the received schedule data and build the array of schedule objects
-      let i = 0;
-      while (req.body[`schedule[${i}].day`] !== undefined) {
-        schedule.push({
-          day: req.body[`schedule[${i}].day`],
-          openTime: req.body[`schedule[${i}].openTime`],
-          closeTime: req.body[`schedule[${i}].closeTime`],
-          breakStart: req.body[`schedule[${i}].breakStart`],
-          breakFinish: req.body[`schedule[${i}].breakFinish`],
-        });
-        i++;
-      }
+      // // Construct the schedule array from the flattened keys
+      // const schedule = [];
+      // // Loop through the received schedule data and build the array of schedule objects
+      // let i = 0;
+      // while (req.body[`schedule[${i}].day`] !== undefined) {
+      //   schedule.push({
+      //     day: req.body[`schedule[${i}].day`],
+      //     openTime: req.body[`schedule[${i}].openTime`],
+      //     closeTime: req.body[`schedule[${i}].closeTime`],
+      //     breakStart: req.body[`schedule[${i}].breakStart`],
+      //     breakFinish: req.body[`schedule[${i}].breakFinish`],
+      //   });
+      //   i++;
+      // }
       
       let newEmployee = {
         businessId: businessId,
         picture: downloadURL, 
         fullName: (req.body.fullName), 
         services: JSON.parse(req.body.services),
-        schedule: schedule,
+        schedule: JSON.parse(req.body.schedule),
         sessionTime: (req.body.sessionTime),
         active: (req.body.active)
       }
