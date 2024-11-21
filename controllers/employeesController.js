@@ -45,7 +45,7 @@ const employeesController = {
         businessId: businessId,
         picture: downloadURL, 
         fullName: (req.body.fullName), 
-        services: (req.body.services),
+        services: JSON.parse(req.body.services),
         schedule: schedule,
         sessionTime: (req.body.sessionTime),
         active: (req.body.active)
