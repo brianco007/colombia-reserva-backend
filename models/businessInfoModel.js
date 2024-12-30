@@ -11,25 +11,26 @@ const scheduleModel = new Schema({
 const businessInfoModel = new Schema({
   schedule: {type: [scheduleModel], _id: false, required: [true, "Debe subir el horario de al menos un día."]},
 
-  sessionTime: {type: String},
+  sessionTime: {type: String, trim: true},
 
   timeSlots: {type: [{day: String, timeSlots: [{value: String, display: String, _id: false}]}], _id: false},
 
-  banner: {type: String },
+  banner: {type: String, trim: true },
 
-  businessName: {type: String },
-  address: {type: String },
-  phone: {type: String },
-  email: {type: String },
-  aboutUs: {type: String },
-  instagram: String,
-  facebook: String,
-  tiktok: String,
-  youtube: String,
-  linkedIn: String,
+  businessName: {type: String, trim: true },
+  address: {type: String, trim: true },
+  phone: {type: String, trim: true },
+  email: {type: String, trim: true },
+  aboutUs: {type: String, trim: true },
+  instagram: {type: String, trim: true },
+  facebook: {type: String, trim: true },
+  tiktok: {type: String, trim: true },
+  youtube: {type: String, trim: true },
+  linkedIn: {type: String, trim: true },
   needsReceipts: Boolean,
-  receiptInfo: String,
-  bankAccounts: [{bank: String, number: String}]
+  receiptInfo: {type: String, trim: true },
+  bankAccounts: [{bank: String, number: String}],
+  type: {type: String},
 },
 {versionKey:false , timestamps: false}
 );
