@@ -1,4 +1,11 @@
 import businessInfoModel from "../models/businessInfoModel.js"
+import reviewsModel from "../models/reviewsModel.js"
+import employeesModel from "../models/employeesModel.js"
+import adsModel from "../models/adsModel.js"
+import eventsModel from "../models/eventsModel.js"
+import galleryModel from "../models/galleryModel.js"
+import signupModel from "../models/signupModel.js"
+import offerModel from "../models/offerModel.js"
 import generateTimeSlots from "../tools/generateTimeSlots.js";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } from "firebase/storage";
@@ -185,7 +192,25 @@ const businessInfoController = {
   deleteBusiness: async (req, res) => {
     try {
       const businessToBeDeleted = await businessInfoModel.findByIdAndDelete(req.params.id);
-      res.json({ message: "Business has been removed." });
+
+      const resultReviews = await reviewsModel.deleteMany({ businessId: req.params.id });
+      const resultAds = await adsModel.deleteMany({ businessId: req.params.id });
+      const resultEmployees = await employeesModel.deleteMany({ businessId: req.params.id });
+      const resultEvents = await eventsModel.deleteMany({ businessId: req.params.id });
+      const resultGallery = await galleryModel.deleteMany({ businessId: req.params.id });
+      const resultSignup = await signupModel.deleteMany({ businessId: req.params.id });
+      const resultOffers = await offerModel.deleteMany({ businessId: req.params.id });
+
+      res.json({ 
+        message: "Business has been removed.", 
+        ads: `Total deleted: ${resultAds.deletedCount}`, 
+        reviews: `Total deleted: ${resultReviews.deletedCount}`, 
+        employees: `Total deleted: ${resultEmployees.deletedCount}`, 
+        events: `Total deleted: ${resultEvents.deletedCount}`,
+        gallery: `Total deleted: ${resultGallery.deletedCount}`,
+        signup: `Total deleted: ${resultSignup.deletedCount}`,
+        offers: `Total deleted: ${resultOffers.deletedCount}`
+      });
     } catch (error) {
       res.json({ message: "Error. Make sure the business ID is correct" });
     }
