@@ -3,6 +3,7 @@ import businessInfoModel from "../models/businessInfoModel.js";
 import transporter from "../nodemailerTransporter.js";
 import "dotenv/config";
 import confirmationNumberGenerator from "../tools/confirmationNumberGenerator.js";
+import axios from "axios";
 //firebase imports
 import firebaseConfig from "../firebaseConfig.js";
 import { initializeApp } from "firebase/app";
@@ -21,7 +22,7 @@ const eventsModelController = {
       const newEvent = new eventsModel(req.body);
       newEvent.confirmationNumber = confirmationNumberGenerator();
       
-      // Upload recipt to Firebase
+      // Upload receipt to Firebase
       const { businessId } = req.body
       if(req.file){
         const storageRef = ref(storage, `receipts/${businessId}-${req.file.originalname}`);
@@ -37,7 +38,7 @@ const eventsModelController = {
       const createdEvent = await newEvent.save();
 
       // Variables for sending emails
-      const { businessName, email, _id, banner } = await businessInfoModel.findById(
+      const { businessName, email, _id, banner, phone } = await businessInfoModel.findById(
         newEvent.businessId
       );
 
@@ -116,6 +117,32 @@ const eventsModelController = {
         transporter.sendMail(emailForClient),
         transporter.sendMail(emailForBusiness),
       ]);
+
+      //WHATSAPP CLIENT
+      axios
+      .post(apiUrl, {
+        phone: `+57${newEvent.split("-")[1].trim()}` ,
+        message: `Hola ${newEvent.title.split(" ")[0].trim()}! Tu reserva en ${businessName} para el ${newEvent.start.split("T")[0]} a las ${newEvent.start.split("T")[1].slice(0, 5)} ha sido confirmada. Número de confirmación: ${newEvent.confirmationNumber}.`
+      })
+      .then((response) => {
+        console.log('Mensaje enviado correctamente', response.data);
+      })
+      .catch((error) => {
+        console.error('Error al enviar mensaje:', error.response ? error.response.data : error.message);
+      });
+
+      //WHATSAPP BUSINESS
+      axios
+      .post(apiUrl, {
+        phone: `+57${phone}`,
+        message: `Nueva Reserva! ${businessName} acabas de recibir una nueva reserva. Cliente: ${newEvent.title}. Fecha: ${newEvent.start.split("T")[0]}. Hora: ${newEvent.start.split("T")[1].slice(0, 5)}. Para ver más detalles ve a : ${BASE_URL}/dashboard/${_id}`
+      })
+      .then((response) => {
+        console.log('Mensaje enviado correctamente', response.data);
+      })
+      .catch((error) => {
+        console.error('Error al enviar mensaje:', error.response ? error.response.data : error.message);
+      });
 
       // Send the success response only once after emails are sent
       res
