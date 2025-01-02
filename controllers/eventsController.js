@@ -120,8 +120,8 @@ const eventsModelController = {
 
       //WHATSAPP CLIENT
       axios
-      .post(apiUrl, {
-        phone: `+57${newEvent.split("-")[1].trim()}` ,
+      .post("http://34.136.118.146:3000/send-message", {
+        phone: `+57${newEvent.title.split("-")[1].trim()}` ,
         message: `Hola ${newEvent.title.split(" ")[0].trim()}! Tu reserva en ${businessName} para el ${newEvent.start.split("T")[0]} a las ${newEvent.start.split("T")[1].slice(0, 5)} ha sido confirmada. Número de confirmación: ${newEvent.confirmationNumber}.`
       })
       .then((response) => {
@@ -133,7 +133,7 @@ const eventsModelController = {
 
       //WHATSAPP BUSINESS
       axios
-      .post(apiUrl, {
+      .post("http://34.136.118.146:3000/send-message", {
         phone: `+57${phone}`,
         message: `Nueva Reserva! ${businessName} acabas de recibir una nueva reserva. Cliente: ${newEvent.title}. Fecha: ${newEvent.start.split("T")[0]}. Hora: ${newEvent.start.split("T")[1].slice(0, 5)}. Para ver más detalles ve a : ${BASE_URL}/dashboard/${_id}`
       })
