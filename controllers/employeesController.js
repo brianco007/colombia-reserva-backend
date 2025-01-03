@@ -45,6 +45,8 @@ const employeesController = {
         businessId: businessId,
         picture: downloadURL, 
         fullName: (req.body.fullName), 
+        email: (req.body.email), 
+        phone: (req.body.fullName), 
         services: JSON.parse(req.body.services),
         schedule: JSON.parse(req.body.schedule),
         sessionTime: (req.body.sessionTime),
