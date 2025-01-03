@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 const scheduleModel = new Schema({
   day: {type: String, required: true},
   openTime: {type: String, required: [true, "Debe incluir la hora de apertura."]},
