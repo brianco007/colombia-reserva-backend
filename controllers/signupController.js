@@ -82,7 +82,7 @@ const signupController = {
       // Verificar que la contraseña antigua sea correcta
       const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
       if (!isPasswordMatch) {
-        return res.status(401).json({ message: "The old password is incorrect." });
+        return res.json({ message: "The old password is incorrect." });
       }
   
       // Encriptar la nueva contraseña
