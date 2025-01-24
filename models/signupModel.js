@@ -8,6 +8,7 @@ const signupModel = new Schema(
       type: String, 
       required: [true, "The email is required."],
       trim: true,
+      unique: true,
       validate: {
         validator: function(value){
           return emailRegex.test(value)
@@ -26,7 +27,14 @@ const signupModel = new Schema(
     businessId: {
       type: String, 
       required: [true, "Business ID is required"],
-    }
+    },
+
+    role: {
+      type: String,
+      enum: ["admin", "employee", "superadmin"], // Restricts the values to these options
+      default: "admin", // Sets the default value
+      required: [true, "Role is required"], // Ensures the field is required
+    },
   },
   { versionKey: false, timestamps: true }
 );

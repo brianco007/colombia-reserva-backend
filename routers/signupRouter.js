@@ -1,11 +1,13 @@
 import { Router } from "express";
 import signupController from "../controllers/signupController.js"
 
-const signupRputer = Router();
+const signupRouter = Router();
 
-signupRputer.post('/', signupController.createNewUser);
-signupRputer.get('/', signupController.getAllUsers);
-signupRputer.get('/:id', signupController.getOneUser);
-signupRputer.delete('/:id', signupController.deleteOneUser);
+signupRouter.post('/', signupController.createNewUser);
+signupRouter.get('/', signupController.getAllUsers);
+signupRouter.get('/:id', signupController.getOneUser);
+signupRouter.delete('/:id', signupController.deleteOneUser);
+signupRouter.put('/:id/password', signupController.updatePassword);
 
-export default signupRputer;
+
+export default signupRouter;
